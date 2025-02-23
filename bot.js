@@ -116,6 +116,37 @@ client.on('messageCreate', async (message) => {
         }
     }
 
+    // Add this to your existing commands in bot.js
+    if (message.content.startsWith(`${PREFIX}removewarning`) || message.content.startsWith(`${PREFIX}unwarn`)) {
+        // Check if user has permission to remove warnings (you might want to restrict this to moderators)
+        if (!message.member.permissions.has('MODERATE_MEMBERS')) {
+            return message.channel.send('You do not have permission to remove warnings.');
+        }
+
+        const member = message.mentions.members.first();
+        if (member) {
+            if (userWarnings[member.id]) {
+                if (userWarnings[member.id] > 0) {
+                    userWarnings[member.id] -= 1;
+                    message.channel.send(`Removed 1 warning from ${member}. They now have ${userWarnings[member.id]} warnings.`);
+                } else {
+                    message.channel.send(`${member} has no warnings to remove.`);
+                }
+            } else {
+                message.channel.send(`${member} has no warnings.`);
+            }
+        } else {
+            message.channel.send('Please mention a user to remove a warning from.');
+        }
+    }
+
+    // Also add a command to check warnings
+    if (message.content.startsWith(`${PREFIX}warnings`)) {
+        const member = message.mentions.members.first() || message.member;
+        const warnings = userWarnings[member.id] || 0;
+        message.channel.send(`${member} has ${warnings} warning(s).`);
+    }
+
     // Add more commands and rules enforcement as needed
 });
 
