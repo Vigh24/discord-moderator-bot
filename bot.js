@@ -71,10 +71,39 @@ client.on('messageCreate', async (message) => {
         return message.channel.send(`${message.author}, your message was deleted for being spam.`);
     }
 
-    // Check for abusive words
+    // Check for abusive words with automatic ban
     if (containsAbusiveWords(message.content)) {
         await message.delete(); // Delete the abusive message
-        return message.channel.send(`${message.author}, your message was deleted for containing abusive language.`);
+
+        // Track the number of abusive messages
+        if (!userWarnings[message.author.id]) {
+            userWarnings[message.author.id] = 0;
+        }
+        userWarnings[message.author.id] += 1;
+
+        // Send warning message with current count
+        message.channel.send(`${message.author}, your message was deleted for containing abusive language. Total warnings: ${userWarnings[message.author.id]}`);
+
+        const member = message.member;
+        
+        // Progressive punishment system
+        if (userWarnings[message.author.id] >= 5) {
+            // Ban after 5 warnings
+            try {
+                await member.ban({ reason: 'Reached 5 warnings for abusive language' });
+                message.channel.send(`${member} has been banned for receiving 5 warnings for abusive language.`);
+            } catch (error) {
+                message.channel.send(`Failed to ban ${member}. Please check bot permissions.`);
+            }
+        } else if (userWarnings[message.author.id] >= 3) {
+            // Timeout after 3 warnings
+            try {
+                await member.timeout(30 * 60 * 1000); // 30 minutes timeout
+                message.channel.send(`${member} has been timed out for receiving 3 warnings for abusive language.`);
+            } catch (error) {
+                message.channel.send(`Failed to timeout ${member}. Please check bot permissions.`);
+            }
+        }
     }
 
     // Check for links to other Discord servers
