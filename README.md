@@ -61,3 +61,4 @@ This project is licensed under the MIT License.
 - `!warnings @username`: Checks the number of warnings for the mentioned user or yourself.
 - `!listwarnings`: Lists all users and their warning counts (admin only).
 - `!checkwarnings @username`: Checks the number of warnings for the mentioned user.
+- `!kick @username [reason]`: Kicks the mentioned user from the server with an optional reason and sends a DM to the user with the reason.

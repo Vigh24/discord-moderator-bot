@@ -199,6 +199,30 @@ client.on('messageCreate', async (message) => {
         message.channel.send(`${member.user.tag} has ${warnings} warning(s).`);
     }
 
+    // Command to kick a user
+    if (message.content.startsWith(`${PREFIX}kick`)) {
+        // Check if the user has permission to kick members
+        if (!message.member.permissions.has('KICK_MEMBERS')) {
+            return message.channel.send('You do not have permission to kick members.');
+        }
+
+        const args = message.content.split(' ');
+        const member = message.mentions.members.first();
+        const reason = args.slice(2).join(' ') || 'No reason provided'; // Get the reason from the command
+
+        if (member) {
+            try {
+                await member.send(`You have been kicked from the server. Reason: ${reason}`); // Send DM to the user
+                await member.kick(reason); // Kick the member with the provided reason
+                message.channel.send(`${member.user.tag} has been kicked. Reason: ${reason}`);
+            } catch (error) {
+                message.channel.send(`Failed to kick ${member}. Please check bot permissions.`);
+            }
+        } else {
+            message.channel.send('Please mention a user to kick.');
+        }
+    }
+
     // Add more commands and rules enforcement as needed
 });
 
