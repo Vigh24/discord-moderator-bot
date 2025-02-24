@@ -176,6 +176,29 @@ client.on('messageCreate', async (message) => {
         message.channel.send(`${member} has ${warnings} warning(s).`);
     }
 
+    // Command to list all warnings
+    if (message.content.startsWith(`${PREFIX}listwarnings`)) {
+        // Check if the user has admin permissions
+        if (!message.member.permissions.has('ADMINISTRATOR')) {
+            return message.channel.send('You do not have permission to view the warnings list.');
+        }
+
+        let warningList = 'Warnings List:\n';
+        for (const [userId, count] of Object.entries(userWarnings)) {
+            const member = await message.guild.members.fetch(userId);
+            warningList += `${member.user.tag}: ${count} warning(s)\n`;
+        }
+
+        message.channel.send(warningList || 'No warnings recorded.');
+    }
+
+    // Command to check warnings for an individual member
+    if (message.content.startsWith(`${PREFIX}checkwarnings`)) {
+        const member = message.mentions.members.first() || message.member; // Default to the message author if no member is mentioned
+        const warnings = userWarnings[member.id] || 0;
+        message.channel.send(`${member.user.tag} has ${warnings} warning(s).`);
+    }
+
     // Add more commands and rules enforcement as needed
 });
 

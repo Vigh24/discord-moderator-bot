@@ -51,3 +51,13 @@ Feel free to submit issues or pull requests if you have suggestions or improveme
 ## License
 
 This project is licensed under the MIT License.
+
+## Commands
+
+- `!warn @username`: Issues a warning to the mentioned user.
+- `!timeout @username`: Times out the mentioned user for 30 minutes.
+- `!removewarning @username`: Removes a warning from the mentioned user.
+- `!unwarn @username`: Alias for removing a warning from the mentioned user.
+- `!warnings @username`: Checks the number of warnings for the mentioned user or yourself.
+- `!listwarnings`: Lists all users and their warning counts (admin only).
+- `!checkwarnings @username`: Checks the number of warnings for the mentioned user.
