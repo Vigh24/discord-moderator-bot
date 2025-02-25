@@ -10,7 +10,6 @@ const abusiveWords = [
     'badword1', // Replace with actual words
     'badword2',
     'badword3',
-    'stupid',
     'kill',
     'suck',
     'loser',
@@ -42,15 +41,6 @@ const abusiveWords = [
     'jerk',
     'asshat',
     'butthurt',
-    'snowflake',
-    'simp',
-    'beta',
-    'toxic',
-    'cancer',
-    'trash',
-    'garbage',
-    'worthless',
-    'nobody',
     'kill yourself', // Extremely harmful phrase
     'go die' // Extremely harmful phrase
 ];
